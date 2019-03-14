@@ -9,6 +9,7 @@ import java.text.CollationKey;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Description:
@@ -69,9 +70,9 @@ public class DataAsyncAPI {
                 quotaSorts.put(quota.getGroupId(), quota);
             }else{
                 try {
-                    Thread.sleep(100);
+                    TimeUnit.MILLISECONDS.sleep(100);
                 } catch (InterruptedException e) {
-                    //System.out.println(""+e.getMessage());
+                    e.printStackTrace();
                 }
             }
         }

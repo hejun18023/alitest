@@ -4,10 +4,7 @@ import com.harmy.producer.QuotaInitProducer;
 
 import java.io.File;
 import java.text.MessageFormat;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.*;
 
 /**
  * Description:
@@ -55,7 +52,7 @@ public class App
                 } catch (RejectedExecutionException e) {
                     try {
                         //线程池所有线程都在忙就休眠0.1S
-                        Thread.sleep(100);
+                        TimeUnit.MILLISECONDS.sleep(100);
                     } catch (InterruptedException e1) {
                         e1.printStackTrace();
                     }
@@ -64,9 +61,9 @@ public class App
 
             try {
                 latch.await();
-                //等待排序完
+                //等待排序完,kill掉线程
                 while(DataAsyncAPI.getInstance().remainSize() > 0){
-                    Thread.sleep(1000);
+                    TimeUnit.MILLISECONDS.sleep(1000);
                 }
                 consume.interrupt();
 
