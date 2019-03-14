@@ -2,7 +2,7 @@ package com.harmy.model;
 
 /**
  * Description: 指标
- * Created by za-hejun on 2019/3/13
+ * Created by za-hejun on 2019/3/14
  */
 public class Quota {
     /**
@@ -48,5 +48,10 @@ public class Quota {
 
     public void setQuota(float quota) {
         this.quota = quota;
+    }
+
+    @Override
+    public String toString(){
+        return id + " " + groupId + " " + quota;
     }
 }

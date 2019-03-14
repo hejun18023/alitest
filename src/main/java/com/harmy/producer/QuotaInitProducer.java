@@ -1,21 +1,26 @@
 package com.harmy.producer;
 
+import com.harmy.DataAsyncAPI;
 import com.harmy.model.Quota;
 
 import java.io.*;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Description:
- * Created by za-hejun on 2019/3/13
+ * Created by za-hejun on 2019/3/14
  */
 public class QuotaInitProducer implements Runnable {
 
     private File file;
 
+    private CountDownLatch latch;
+
     public QuotaInitProducer(){}
 
-    public QuotaInitProducer(File file){
+    public QuotaInitProducer(File file, CountDownLatch latch){
         this.file = file;
+        this.latch = latch;
     }
 
     @Override
@@ -30,8 +35,9 @@ public class QuotaInitProducer implements Runnable {
                 String[] strs = str.split(",");
                 if(null != strs && strs.length != 3) continue;
                 Quota quota = new Quota(strs[0], strs[1], Float.parseFloat(strs[2]));
-
+                DataAsyncAPI.getInstance().putData(quota);
             }
+            latch.countDown();
 
         } catch (IOException e) {
             System.out.println(e.getMessage());
@@ -47,7 +53,7 @@ public class QuotaInitProducer implements Runnable {
                 try {
                     bufferedReader.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println(e.getMessage());
                 }
             }
 
